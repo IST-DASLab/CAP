@@ -1,0 +1,31 @@
+training_modifiers:
+
+  - !EpochRangeModifier
+    start_epoch: 0
+    end_epoch: 50
+
+  - !LearningRateFunctionModifier
+    start_epoch: 0
+    end_epoch: 50
+    lr_func: linear
+    init_lr: 0.0005
+    final_lr: 0.00001
+    cycle_epochs: 50
+
+pruning_modifiers:
+
+  - !OBSPruningModifier
+    params: ['re:.*(attn.(qkv|proj)|mlp.fc\d+).weight']
+    init_sparsity: 0.5
+    final_sparsity: 0.5
+    start_epoch: 0
+    end_epoch: 50
+    update_frequency: 50
+    mask_type: N:M
+    global_sparsity: True
+    num_grads: 4096
+    fisher_block_size: 192
+    damp: 1.0e-6
+    num_recomputations: 1
+    n: 2
+    m: 4

@@ -1,0 +1,29 @@
+training_modifiers:
+
+  - !EpochRangeModifier
+    start_epoch: 0
+    end_epoch: 20
+
+  - !LearningRateFunctionModifier
+    start_epoch: 0
+    end_epoch: 20
+    lr_func: linear
+    init_lr: 0.0001
+    final_lr: 0.00001
+    cycle_epochs: 20
+
+pruning_modifiers:
+
+  - !CAPruningModifier
+    params: ['re:.*(downsample.1|fc\d).weight']
+    init_sparsity: 0.5
+    final_sparsity: 0.5
+    start_epoch: 0
+    end_epoch: 20
+    update_frequency: 20
+    mask_type: unstructured
+    global_sparsity: True
+    num_grads: 4096
+    fisher_block_size: 192
+    damp: 1.0e-8
+    num_recomputations: 1

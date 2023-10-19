@@ -1,0 +1,45 @@
+training_modifiers:
+
+  - !EpochRangeModifier
+    start_epoch: 0
+    end_epoch: 100
+
+  - !LearningRateFunctionModifier
+    start_epoch: 0
+    end_epoch: 100
+    lr_func: linear
+    init_lr: 0.0005
+    final_lr: 0.00001
+    cycle_epochs: 20
+
+pruning_modifiers:
+
+  - !CAPruningModifier
+    params: ['re:(.*blocks.*.attn.[qkv].weight)|(.*blocks.*.attn.proj.weight)|(.*blocks.*.mlp.fc.*weight)']
+    init_sparsity: 0.4
+    final_sparsity: 0.9
+    start_epoch: 0
+    end_epoch: 80
+    update_frequency: 20
+    inter_func: linear
+    mask_type: unstructured
+    global_sparsity: True
+    num_grads: 4096
+    fisher_block_size: 192
+    damp: 1.0e-8
+    num_recomputations: 1
+
+  - !CAPruningModifier
+    params: ['re:(.*blocks.*.attn.[qkv].weight)|(.*blocks.*.attn.proj.weight)|(.*blocks.*.mlp.fc.*weight)']
+    init_sparsity: 0.9
+    final_sparsity: 0.9
+    start_epoch: 80
+    end_epoch: 100
+    update_frequency: 20
+    inter_func: linear
+    mask_type: unstructured
+    global_sparsity: True
+    num_grads: 4096
+    fisher_block_size: 192
+    damp: 1.0e-8
+    num_recomputations: 1

@@ -1,0 +1,25 @@
+training_modifiers:
+
+  - !EpochRangeModifier
+    start_epoch: 0
+    end_epoch: 20
+
+  - !LearningRateFunctionModifier
+    start_epoch: 0
+    end_epoch: 20
+    lr_func: linear
+    init_lr: 0.0001
+    final_lr: 0.00001
+    cycle_epochs: 20
+
+pruning_modifiers:
+
+  - !GlobalMagnitudePruningModifier
+    params: ['re:(.*blocks.*.attn.*.weight)|(.*blocks.*.mlp.fc.*weight|.*layers.*.downsample.reduction.weight)']
+    init_sparsity: 0.5
+    final_sparsity: 0.5
+    start_epoch: 0
+    end_epoch: 20
+    update_frequency: 20
+    mask_type: unstructured
+    global_sparsity: True

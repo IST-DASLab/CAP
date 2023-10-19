@@ -1,0 +1,11 @@
+pruning_modifiers:
+
+  - !GlobalMagnitudePruningModifier
+    params: ['re:.*(attn.(qkv|proj)|mlp.fc\d+).weight']
+    init_sparsity: 0.5
+    final_sparsity: 0.5
+    start_epoch: 0
+    end_epoch: 1
+    update_frequency: 1
+    mask_type: "2:4"
+    global_sparsity: True

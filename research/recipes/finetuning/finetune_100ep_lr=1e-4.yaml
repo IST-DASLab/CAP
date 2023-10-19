@@ -1,0 +1,20 @@
+training_modifiers:
+
+  - !EpochRangeModifier
+    start_epoch: 0
+    end_epoch: 100
+
+  - !LearningRateFunctionModifier
+    start_epoch: 0
+    end_epoch: 100
+    lr_func: cosine
+    init_lr: 0.0001
+    final_lr: 0.00001
+    cycle_epochs: 100
+
+pruning_modifiers:
+
+  - !ConstantPruningModifier
+    params: ['re:.*weight']
+    start_epoch: 0
+    end_epoch: 100

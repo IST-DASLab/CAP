@@ -1,0 +1,16 @@
+pruning_modifiers:
+
+  - !MFACPruningModifier
+    params: ['re:.*(conv1.(3|6)|layer\d+.\d+.(conv|downsample.1)).*weight']
+    init_sparsity: 0.5
+    final_sparsity: 0.5
+    start_epoch: 0
+    end_epoch: 1
+    update_frequency: 1
+    mask_type: unstructured
+    use_gradient_buffering: False
+    global_sparsity: True
+    num_grads: 4096
+    fisher_block_size: 2048
+    damp: 1.0e-5
+    block_implementation: 'block'

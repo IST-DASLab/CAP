@@ -1,0 +1,70 @@
+training_modifiers:
+
+  - !EpochRangeModifier
+    start_epoch: 0
+    end_epoch: 120
+
+  - !LearningRateFunctionModifier
+    start_epoch: 0
+    end_epoch: 60
+    lr_func: linear
+    init_lr: 0.0002
+    final_lr: 0.00001
+    cycle_epochs: 30
+    cycle_mul: 1.0
+
+  - !LearningRateFunctionModifier
+    start_epoch: 60
+    end_epoch: 120
+    lr_func: linear
+    init_lr: 0.0004
+    final_lr: 0.00001
+    cycle_epochs: 30
+    cycle_mul: 1.0
+
+pruning_modifiers:
+
+  - !CAPruningModifier
+    params: ['re:.*(attn.(qkv|proj)|mlp.fc\d+).weight']
+    init_sparsity: 0.4
+    final_sparsity: 0.6
+    start_epoch: 0
+    end_epoch: 30
+    update_frequency: 30
+    inter_func: linear
+    mask_type: unstructured
+    global_sparsity: True
+    num_grads: 4096
+    fisher_block_size: 192
+    damp: 1.0e-8
+    num_recomputations: 1
+
+  - !CAPruningModifier
+    params: ['re:.*(attn.(qkv|proj)|mlp.fc\d+).weight']
+    init_sparsity: 0.6
+    final_sparsity: 0.75
+    start_epoch: 30
+    end_epoch: 90
+    update_frequency: 30
+    inter_func: linear
+    mask_type: unstructured
+    global_sparsity: True
+    num_grads: 4096
+    fisher_block_size: 192
+    damp: 1.0e-8
+    num_recomputations: 1
+
+  - !CAPruningModifier
+    params: ['re:.*(attn.(qkv|proj)|fc\d+).weight']
+    init_sparsity: 0.75
+    final_sparsity: 0.75
+    start_epoch: 90
+    end_epoch: 120
+    update_frequency: 30
+    inter_func: linear
+    mask_type: unstructured
+    global_sparsity: True
+    num_grads: 4096
+    fisher_block_size: 192
+    damp: 1.0e-8
+    num_recomputations: 1

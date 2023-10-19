@@ -1,0 +1,40 @@
+training_modifiers:
+
+  - !EpochRangeModifier
+    start_epoch: 0
+    end_epoch: 10
+
+  - !LearningRateFunctionModifier
+    start_epoch: 0
+    end_epoch: 10
+    lr_func: cosine
+    init_lr: 0.0005
+    final_lr: 0.00001
+
+pruning_modifiers:
+
+  - !FastCAPruningModifier
+    params: ['re:(.*blocks.*.attn.qkv.weight)|(.*blocks.*.attn.proj.weight)|(.*blocks.*.mlp.fc.*weight)']
+    init_sparsity: 0.4
+    final_sparsity: 0.9
+    start_epoch: 0
+    end_epoch: 8
+    update_frequency: 2
+    inter_func: linear
+    mask_type: unstructured
+    num_grads: 128
+    fisher_block_size: 192
+    damp: 1.0e-2
+
+  - !FastCAPruningModifier
+    params: ['re:(.*blocks.*.attn.qkv.weight)|(.*blocks.*.attn.proj.weight)|(.*blocks.*.mlp.fc.*weight)']
+    init_sparsity: 0.9
+    final_sparsity: 0.9
+    start_epoch: 8
+    end_epoch: 10
+    update_frequency: 2
+    inter_func: linear
+    mask_type: unstructured
+    num_grads: 128
+    fisher_block_size: 192
+    damp: 1.0e-2
