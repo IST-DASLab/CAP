@@ -1,5 +1,8 @@
 ### Official repository of CAP
 ---
+This repository contains the code for the NeurIPS 2023 paper
+[CAP: Correlation-Aware Pruning for Highly-Accurate Sparse Vision Models](https://arxiv.org/abs/2210.09223).
+
 
 To facilitate reproducibility of our experiments, we integrate our pruners with the popular open-source library [SparseML](https://github.com/neuralmagic/sparseml) and build on top of the `rwightman`'s `train.py` script from [https://github.com/rwightman/pytorch-image-models](https://github.com/rwightman/pytorch-image-models).
 
